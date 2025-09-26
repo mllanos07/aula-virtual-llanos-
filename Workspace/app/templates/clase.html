@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ clase.Nombre_materia }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('index') }}">
+                <img src="https://imgs.search.brave.com/C71vif74_qX_nFB2lVuFIpRulf5k__yEOMRuic0Q3nI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly8xMDAwbG9nb3MubmV0L3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDE3LzAz/L0tmY19sb2dvLTUw/MHgyODEucG5n" alt="Logo"
+                    width="30" height="24">
+                Classroom
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    {% if session['user'] %}
+                    <li class="nav-item d-flex align-items-center">
+                        <span class="navbar-text me-2">Hola, {{ session['user']['nombre'] }}</span>
+                        <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm">Log out</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a href="{{ url_for('login') }}" class="btn btn-primary btn-sm me-2">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('signup') }}" class="btn btn-success btn-sm">Sign Up</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">{{ clase.Nombre_materia }}</h2>
+
+        <!-- MATERIALES DIDÁCTICOS -->
+        <div class="mb-4">
+            <h4>Materiales didácticos</h4>
+            {% if materiales %}
+                {% for m in materiales %}
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5>{{ m.titulo }}</h5>
+                        <p>{{ m.descripcion }}</p>
+                        {% if m.archivo %}
+                        <a href="/uploads/{{ m.archivo }}" target="_blank">Descargar archivo</a>
+                        {% endif %}
+                        {% if m.enlace %}
+                        <a href="{{ m.enlace }}" target="_blank">Enlace externo</a>
+                        {% endif %}
+                        <br><small>{{ m.fecha }}</small>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="text-muted">No hay materiales publicados.</p>
+            {% endif %}
+        </div>
+
+        <!-- EXÁMENES/PRUEBAS -->
+        <div class="mb-4">
+            <h4>Pruebas / Exámenes</h4>
+            {% if examenes %}
+                <ul class="list-group">
+                {% for ex in examenes %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ ex.Titulo }}</strong> <span class="text-muted">({{ ex.fecha }})</span><br>
+                            <span>{{ ex.contenido }}</span>
+                        </div>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No hay exámenes cargados.</p>
+            {% endif %}
+        </div>
+
+        <!-- MENSAJES DE LA CLASE (FORO/CHAT) -->
+        <div class="mb-4">
+            <h4>Mensajes de la clase</h4>
+            <div class="border rounded p-2 mb-2" style="background:#f8f9fa; max-height:300px; overflow-y:auto;">
+                {% for msg in mensajes %}
+                <div class="mb-2">
+                    <b>
+                        {% if msg.autor_tipo == 'profesor' %}
+                            {{ msg.profe_nombre }} {{ msg.profe_apellido }} (profesor)
+                        {% else %}
+                            {{ msg.autor_nombre }} {{ msg.autor_apellido }} (alumno)
+                        {% endif %}
+                    </b>:
+                    {{ msg.mensaje }}<br>
+                    <small class="text-muted">{{ msg.fecha }}</small>
+                </div>
+                {% endfor %}
+                {% if not mensajes %}<span class="text-muted">No hay mensajes aún.</span>{% endif %}
+            </div>
+            <form method="POST">
+                <div class="input-group">
+                    <input type="text" name="mensaje" class="form-control" placeholder="Escribe un mensaje..." required>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
