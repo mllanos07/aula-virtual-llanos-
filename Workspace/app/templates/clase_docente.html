@@ -89,7 +89,7 @@
 
         <div class="mb-4">
             <h4>Pruebas / Exámenes</h4>
-            <a href="{{ url_for('agregar_examen', cod_materia=clase.Cod_materia) }}" class="btn btn-success btn-sm mb-2">Agregar Examen</a>
+            <a href="{{ url_for('crear_examen', cod_materia=clase.Cod_materia) }}" class="btn btn-success btn-sm mb-2">Agregar Examen</a>
             {% if examenes %}
                 <ul class="list-group">
                 {% for ex in examenes %}
@@ -133,7 +133,7 @@
                             <h5 class="card-title">{{ m.titulo }}</h5>
                             <p class="card-text">{{ m.descripcion }}</p>
                             {% if m.archivo %}
-                            <a href="/uploads/{{ m.archivo }}" target="_blank" class="btn btn-sm btn-outline-primary">Ver archivo</a>
+                            <a href="{{ url_for('uploaded_file', filename=m.archivo) }}" target="_blank" class="btn btn-sm btn-outline-primary">Ver archivo</a>
                             {% endif %}
                             {% if m.enlace %}
                             <a href="{{ m.enlace }}" target="_blank" class="btn btn-sm btn-outline-secondary">Enlace externo</a>

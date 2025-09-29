@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory, session
 from werkzeug.utils import secure_filename
 
@@ -31,8 +30,16 @@ if connection is None:
     import sys
     sys.exit(1)
 
+import os
+
 app = Flask(__name__)
-app.secret_key = 'clave_secreta_segura'  # Necesario para sesiones
+app.secret_key = 'clave_secreta_segura'
+
+# Ruta para servir archivos subidos
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    uploads_dir = os.path.join(os.path.dirname(__file__), '..', '..', 'uploads')
+    return send_from_directory(uploads_dir, filename)
 
 @app.route("/")
 def index():
@@ -165,7 +172,7 @@ def clase_docente(cod_materia):
     return render_template("clase_docente.html", clase=clase, materiales=materiales, mensajes=mensajes, examenes=examenes)
 
 # Agregar examen
-@app.route("/agregar_examen/<cod_materia>", methods=["GET", "POST"])
+@app.route("/agregar_examen/<cod_materia>", methods=["GET", "POST"], endpoint="crear_examen")
 def agregar_examen(cod_materia):
     if 'user' not in session or session['user']['tipo'] != 'profesor':
         return redirect(url_for('login'))

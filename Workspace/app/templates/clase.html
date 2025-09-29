@@ -65,7 +65,7 @@
                         <h5>{{ m.titulo }}</h5>
                         <p>{{ m.descripcion }}</p>
                         {% if m.archivo %}
-                        <a href="/uploads/{{ m.archivo }}" target="_blank">Descargar archivo</a>
+                        <a href="{{ url_for('uploaded_file', filename=m.archivo) }}" target="_blank">Descargar archivo</a>
                         {% endif %}
                         {% if m.enlace %}
                         <a href="{{ m.enlace }}" target="_blank">Enlace externo</a>
