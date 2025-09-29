@@ -1,3 +1,4 @@
+
 CREATE DATABASE IF NOT EXISTS Classroom;
 USE Classroom;
 
@@ -50,9 +51,12 @@ Titulo varchar(50),
 contenido varchar(50),
 fecha varchar(50)
 );
-create table evaluaciones(
-Titulo varchar(50),
-contenido varchar(50),
-fecha varchar(50)
-);
+CREATE TABLE evaluaciones (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    Cod_materia VARCHAR(25) NOT NULL,
+    Titulo VARCHAR(50),
+    contenido VARCHAR(50),
+    fecha VARCHAR(50),
+    FOREIGN KEY (Cod_materia) REFERENCES Clases(Cod_materia)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 select* from Profesores;

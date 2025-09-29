@@ -2,7 +2,6 @@
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory, session
 from werkzeug.utils import secure_filename
 
-# ...existing code...
 import pymysql
 import pymysql.cursors
 from datetime import datetime
@@ -11,7 +10,7 @@ def connect_to_db():
     try:
         connection = pymysql.connect(
             host='localhost',
-            port=3306,  # Changed from string to integer
+            port=3306,  
             user='root',
             password='root',
             database='Classroom',

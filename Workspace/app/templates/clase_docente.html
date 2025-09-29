@@ -9,13 +9,24 @@
 </head>
 
 <body>
-    <!-- NAVBAR -->
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="{{ url_for('index') }}">
-                <img src="https://imgs.search.brave.com/C71vif74_qX_nFB2lVuFIpRulf5k__yEOMRuic0Q3nI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly8xMDAwbG9nb3MubmV0L3dwLWNvbnRlbnQvdXBsb2Fkcy8yMDE3LzAz/L0tmY19sb2dvLTUw/MHgyODEucG5n" alt="Logo"
-                    width="30" height="24">
+                <img src="https://m.media-amazon.com/images/I/51p4o3hNF0L._AC_SL1000_.jpg" alt="Logo" width="30" height="24">
                 Classroom
+            </a>
+            {% if session['user'] and session['user']['tipo'] == 'profesor' %}
+            <script>
+                document.querySelector('.navbar-brand').setAttribute('href', '{{ url_for('index_docente') }}');
+            </script>
+            {% endif %}
+         
+            {% if session['user'] and session['user']['tipo'] == 'profesor' %}
+            <script>
+                document.querySelector('.navbar-brand').setAttribute('href', '{{ url_for('index_docente') }}');
+            </script>
+            {% endif %}
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,7 +36,7 @@
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         {% if session['user'] and session['user']['tipo'] == 'profesor' %}
-                        <a class="nav-link" href="{{ url_for('index_docente') }}">Home</a>
+                         
                         {% else %}
                         <a class="nav-link" href="{{ url_for('index') }}">Home</a>
                         {% endif %}
@@ -33,14 +44,14 @@
                     {% if session['user'] %}
                     <li class="nav-item d-flex align-items-center">
                         <span class="navbar-text me-2">Hola, {{ session['user']['nombre'] }}</span>
-                        <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm">Log out</a>
+                        <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm">Cerrar sesión</a>
                     </li>
                     {% else %}
                     <li class="nav-item">
-                        <a href="{{ url_for('login') }}" class="btn btn-primary btn-sm me-2">Login</a>
+                        <a href="{{ url_for('login') }}" class="btn btn-primary btn-sm me-2">Iniciar sesión</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url_for('signup') }}" class="btn btn-success btn-sm">Sign Up</a>
+                        <a href="{{ url_for('signup') }}" class="btn btn-success btn-sm">Crear cuenta</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -51,7 +62,6 @@
     <div class="container mt-4">
         <h2 class="text-center mb-4">{{ clase.Nombre_materia }}</h2>
 
-        <!-- FORMULARIO PARA SUBIR MATERIAL DIDÁCTICO -->
         <div class="card mb-4">
             <div class="card-body">
                 <form method="POST" enctype="multipart/form-data">
@@ -77,7 +87,6 @@
             </div>
         </div>
 
-        <!-- EXÁMENES/PRUEBAS -->
         <div class="mb-4">
             <h4>Pruebas / Exámenes</h4>
             <a href="{{ url_for('agregar_examen', cod_materia=clase.Cod_materia) }}" class="btn btn-success btn-sm mb-2">Agregar Examen</a>
@@ -115,7 +124,6 @@
 <body>
 
     <div class="container mt-4">
-        <!-- MATERIALES DIDÁCTICOS -->
         <div class="mb-4">
             <h4>Materiales didácticos</h4>
             {% if materiales %}
@@ -145,7 +153,6 @@
             {% endif %}
         </div>
 
-        <!-- MENSAJES DE LA CLASE (FORO/CHAT) -->
         <div class="mb-4">
             <h4>Mensajes de la clase</h4>
             <div class="border rounded p-2 mb-2" style="background:#f8f9fa; max-height:300px; overflow-y:auto;">
